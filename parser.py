@@ -33,15 +33,11 @@ def gen_component(source) -> Component:
                 desc = ''
                 for i in range(1, len(element)):
                     line = re.match(PARAM_REGEX, element[i])
-                    # if line: # if match, add prop
-                    match len(line.groups()):
-                        case 1:
-                            pass
-                        case 2:
-                            pass
-                        case 3:
-                            pass
-                        comp.add_prop(line.group(1), line.group(2), line.group(3))
+                    if line: # if match, add prop
+                        if len(line.groups()) == 2:
+                            comp.add_prop(line.group(1), line.group(2))
+                        else:
+                            comp.add_prop(line.group(1), line.group(2), line.group(3))
                     else: # add to description
                         desc += element[i].replace('\n', ' ')
                 comp.add_name(element_header.group(2))

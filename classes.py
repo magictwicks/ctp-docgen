@@ -59,7 +59,7 @@ class Component:
     def add_desc(self, d) -> None:
         self.desc = d
 
-    def add_prop(self, n, t, d) -> None:
+    def add_prop(self, t, n, d="n/a") -> None:
         self.props.append(Param(n, t, d))
 
     def add_func(self, func : Function) -> None:

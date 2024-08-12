@@ -10,20 +10,34 @@ def main():
     parser.add_argument('input_dir')
     parser.add_argument('output_dir')
     args = parser.parse_args()
-    path = args.input_dir
+    input_path = args.input_dir
+    output_path = args.output_dir
 
-    if not os.path.isdir(path):
+    if not os.path.isdir(input_path):
         print('The input directory provided is not valid.')
         sys.exit(1)
 
-    if os.path.isdir(path + '/components'):
-        for comp_file in os.listdir(path + '/components'):
-            with open(path + '/components/' + comp_file, 'r') as file:
+    if os.path.isdir(input_path + '/components'):
+        comp_arr = []
+        for comp_file in os.listdir(input_path + '/components'):
+            with open(input_path + '/components/' + comp_file, 'r') as file:
                 source = file.read()
                 component = gen_component(source)
-                print(gen_markdown(component, source))
+            comp_arr.append(component.get_name())
+            with open(output_path + "" + component.get_name(), 'w') as file:
+                content = gen_markdown(component, source)
+                file.write(content)
+        # write components page
+        with open(output_path + "Components", 'w') as file:
+            content = "# React Components\n"
+            for c in sorted(comp_arr):
+                content += "- [{}]({})\n".format(c, c)
+            file.write(content)
+
     else:
         print('There is not components directory.')
+
+    print("Documentation generated!")
 
 
 if __name__ == "__main__":
